@@ -59,7 +59,7 @@ function Debounce(Fn, Delay) {
 }
 
 const Store = {
-    Prefix: 'revcalc.v2.',
+    Prefix: 'recalc.v2.',
     Get(Key, Fallback) {
         const Name = this.Prefix + Key;
         try {
@@ -1437,7 +1437,7 @@ class ScratchPanel {
         const Blob = new Blob([JSON.stringify(Payload, null, 2)], { type: 'application/json' });
         const Link = document.createElement('a');
         Link.href = URL.createObjectURL(Blob);
-        Link.download = 'revcalc-scratch.json';
+        Link.download = 'recalc-scratch.json';
         document.body.appendChild(Link);
         Link.click();
         setTimeout(() => {
