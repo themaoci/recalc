@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>revCalc — RE Toolkit</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="App">
+    <header class="TopBar">
+        <div class="Brand">
+            <span class="BrandPrompt">rev@lab:~$</span>
+            <span class="BrandName">revCalc</span>
+            <span class="BrandTag">RE TOOLKIT</span>
+        </div>
+        <nav class="Tabs" id="tabs">
+            <button class="TabBtn active" data-tab="calc">CALC</button>
+            <button class="TabBtn" data-tab="convert">CONVERT</button>
+        </nav>
+        <div class="TopActions">
+            <div class="Dropdown">
+                <button class="Btn Ghost" id="tools-toggle" aria-haspopup="true" aria-expanded="false">TOOLS ▾</button>
+                <div class="DropdownMenu hidden" id="tools-menu">
+                    <a class="DropdownItem" href="https://www.onlinegdb.com/online_c++_compiler" target="_blank" rel="noopener noreferrer">OnlineGDB — C++ Compiler</a>
+                    <a class="DropdownItem" href="https://pthom.github.io/imgui_explorer/?lib=imgui" target="_blank" rel="noopener noreferrer">ImGui Explorer</a>
+                    <a class="DropdownItem" href="https://defuse.ca/online-x86-assembler.htm" target="_blank" rel="noopener noreferrer">Online x86 / x64 Assembler</a>
+                    <a class="DropdownItem" href="https://www.rapidtables.com/convert/number/hex-to-ascii.html" target="_blank" rel="noopener noreferrer">Hex ⇄ ASCII Converter</a>
+                    <a class="DropdownItem" href="https://temp-mail.org/en/" target="_blank" rel="noopener noreferrer">Temp Mail — disposable inbox</a>
+                </div>
+            </div>
+            <button class="Btn Ghost MusicBtn" id="music-toggle" title="Toggle music" aria-label="Toggle music">♪</button>
+        </div>
+    </header>
+
+    <main class="Layout">
+        <section class="Main">
+
+            <div class="Panel TabPanel" id="calc-panel">
+                <div class="CalcHead">
+                    <div class="Segmented" id="calc-mode">
+                        <button class="SegBtn active" data-calcmode="int">INT</button>
+                        <button class="SegBtn" data-calcmode="float">FLOAT</button>
+                    </div>
+                    <label class="Field">WORD
+                        <select id="word-size" class="Select">
+                            <option value="8">8</option>
+                            <option value="16">16</option>
+                            <option value="32">32</option>
+                            <option value="64" selected>64</option>
+                        </select>
+                    </label>
+                    <button class="Btn Ghost" id="angle-toggle" title="Toggle degrees / radians">DEG</button>
+                    <div class="Spacer"></div>
+                    <button class="Btn" id="save-result">SAVE RESULT</button>
+                </div>
+
+                <div class="Display">
+                    <input type="text" id="expr-input" class="ExprInput" spellcheck="false" autocomplete="off" placeholder="0x90 ^ 0x2A | 1 << 31 | popcnt(0xFF) | bswap(0x41424344)">
+                    <div class="ResultBig Val" id="result-big" title="Click to copy">0</div>
+                    <div class="ResultStatus" id="result-status"></div>
+                </div>
+
+                <div class="ResultGrid" id="int-result">
+                    <div class="KV"><span class="K">SIGNED</span><span class="V Val" id="res-signed">0</span></div>
+                    <div class="KV"><span class="K">UNSIGNED</span><span class="V Val" id="res-unsigned">0</span></div>
+                    <div class="KV"><span class="K">HEX</span><span class="V Val" id="res-hex">0x0</span></div>
+                    <div class="KV"><span class="K">BIN</span><span class="V Val Wrap" id="res-bin">0</span></div>
+                    <div class="KV"><span class="K">OCT</span><span class="V Val" id="res-oct">0o0</span></div>
+                    <div class="KV"><span class="K">ASCII BE</span><span class="V Val Wrap" id="res-ascii-be"></span></div>
+                    <div class="KV"><span class="K">ASCII LE</span><span class="V Val Wrap" id="res-ascii-le"></span></div>
+                    <div class="KV"><span class="K">FLAGS</span><span class="V" id="res-flags"></span></div>
+                </div>
+
+                <div class="ResultGrid hidden" id="float-result">
+                    <div class="KV"><span class="K">VALUE</span><span class="V Val" id="fres-value">0</span></div>
+                    <div class="KV"><span class="K">EXPO</span><span class="V Val" id="fres-expo"></span></div>
+                    <div class="KV"><span class="K">F64 BITS</span><span class="V Val" id="fres-bits64"></span></div>
+                    <div class="KV"><span class="K">F32 BITS</span><span class="V Val" id="fres-bits32"></span></div>
+                    <div class="KV"><span class="K">F64 BYTES</span><span class="V Val Wrap" id="fres-bytes"></span></div>
+                    <div class="KV"><span class="K">CLASS</span><span class="V" id="fres-class"></span></div>
+                </div>
+
+                <details class="Bits" id="bits-wrap">
+                    <summary>BIT VIEW</summary>
+                    <div class="BitGrid" id="bit-grid"></div>
+                </details>
+
+                <div class="PadWrap" id="keypad-int">
+                    <div class="Pad PadSix">
+                        <button class="Key" data-insert="A">A</button>
+                        <button class="Key" data-insert="B">B</button>
+                        <button class="Key" data-insert="C">C</button>
+                        <button class="Key" data-insert="D">D</button>
+                        <button class="Key" data-insert="E">E</button>
+                        <button class="Key" data-insert="F">F</button>
+                    </div>
+                    <div class="Pad PadSix">
+                        <button class="Key KeyFn" data-insert="bswap(">BSWAP</button>
+                        <button class="Key KeyFn" data-insert="rev(">REV</button>
+                        <button class="Key KeyFn" data-insert="popcnt(">POPCNT</button>
+                        <button class="Key KeyFn" data-insert="clz(">CLZ</button>
+                        <button class="Key KeyFn" data-insert="ctz(">CTZ</button>
+                        <button class="Key KeyFn" data-insert="ans">ANS</button>
+                    </div>
+                    <div class="Pad PadSix">
+                        <button class="Key KeyFn" data-action="clear">AC</button>
+                        <button class="Key KeyFn" data-action="del">DEL</button>
+                        <button class="Key KeyFn" data-insert="(">(</button>
+                        <button class="Key KeyFn" data-insert=")">)</button>
+                        <button class="Key KeyFn" data-insert="~">~</button>
+                        <button class="Key KeyOp" data-insert="/">÷</button>
+
+                        <button class="Key" data-insert="7">7</button>
+                        <button class="Key" data-insert="8">8</button>
+                        <button class="Key" data-insert="9">9</button>
+                        <button class="Key KeyOp" data-insert="&lt;&lt;">&lt;&lt;</button>
+                        <button class="Key KeyOp" data-insert="&gt;&gt;">&gt;&gt;</button>
+                        <button class="Key KeyOp" data-insert="*">×</button>
+
+                        <button class="Key" data-insert="4">4</button>
+                        <button class="Key" data-insert="5">5</button>
+                        <button class="Key" data-insert="6">6</button>
+                        <button class="Key KeyOp" data-insert="&amp;">&amp;</button>
+                        <button class="Key KeyOp" data-insert="|">|</button>
+                        <button class="Key KeyOp" data-insert="-">−</button>
+
+                        <button class="Key" data-insert="1">1</button>
+                        <button class="Key" data-insert="2">2</button>
+                        <button class="Key" data-insert="3">3</button>
+                        <button class="Key KeyOp" data-insert="^">^</button>
+                        <button class="Key KeyOp" data-insert="**">**</button>
+                        <button class="Key KeyOp" data-insert="+">+</button>
+
+                        <button class="Key" data-insert="0">0</button>
+                        <button class="Key KeyFn" data-insert="0x">0x</button>
+                        <button class="Key KeyFn" data-insert="%">MOD</button>
+                        <button class="Key KeyFn" data-insert="ans">ans</button>
+                        <button class="Key KeyEq" data-action="equals">=</button>
+                    </div>
+                </div>
+
+                <div class="PadWrap hidden" id="keypad-float">
+                    <div class="Pad PadSix">
+                        <button class="Key KeyFn" data-insert="sin(">sin</button>
+                        <button class="Key KeyFn" data-insert="cos(">cos</button>
+                        <button class="Key KeyFn" data-insert="tan(">tan</button>
+                        <button class="Key KeyFn" data-insert="asin(">asin</button>
+                        <button class="Key KeyFn" data-insert="acos(">acos</button>
+                        <button class="Key KeyFn" data-insert="atan(">atan</button>
+                        <button class="Key KeyFn" data-insert="ln(">ln</button>
+                        <button class="Key KeyFn" data-insert="log(">log</button>
+                        <button class="Key KeyFn" data-insert="abs(">abs</button>
+                        <button class="Key KeyFn" data-insert="exp(">exp</button>
+                        <button class="Key KeyFn" data-insert="floor(">floor</button>
+                        <button class="Key KeyFn" data-insert="round(">round</button>
+                    </div>
+                    <div class="Pad PadFive">
+                        <button class="Key KeyFn" data-action="clear">AC</button>
+                        <button class="Key KeyFn" data-action="del">DEL</button>
+                        <button class="Key KeyFn" data-insert="(">(</button>
+                        <button class="Key KeyFn" data-insert=")">)</button>
+                        <button class="Key KeyOp" data-insert="/">÷</button>
+
+                        <button class="Key" data-insert="7">7</button>
+                        <button class="Key" data-insert="8">8</button>
+                        <button class="Key" data-insert="9">9</button>
+                        <button class="Key KeyOp" data-insert="^">^</button>
+                        <button class="Key KeyOp" data-insert="*">×</button>
+
+                        <button class="Key" data-insert="4">4</button>
+                        <button class="Key" data-insert="5">5</button>
+                        <button class="Key" data-insert="6">6</button>
+                        <button class="Key KeyFn" data-insert="sqrt(">√</button>
+                        <button class="Key KeyOp" data-insert="-">−</button>
+
+                        <button class="Key" data-insert="1">1</button>
+                        <button class="Key" data-insert="2">2</button>
+                        <button class="Key" data-insert="3">3</button>
+                        <button class="Key KeyFn" data-insert="%">%</button>
+                        <button class="Key KeyOp" data-insert="+">+</button>
+
+                        <button class="Key" data-insert="0">0</button>
+                        <button class="Key" data-insert=".">.</button>
+                        <button class="Key KeyFn" data-insert="pi">π</button>
+                        <button class="Key KeyFn" data-insert="e">e</button>
+                        <button class="Key KeyEq" data-action="equals">=</button>
+                    </div>
+                </div>
+
+                <div class="Hint">SYNTAX — 0x90 · 0b1010 · 0o17 · 144 · ans · popcnt() · bswap() · rev() · clz() · ctz() · &amp; | ^ ~ · &lt;&lt; &gt;&gt; · ** · / %</div>
+            </div>
+
+            <div class="Panel TabPanel hidden" id="convert-panel">
+                <div class="Block">
+                    <h3 class="BlockTitle">NUMBER / BASE</h3>
+                    <div class="Row">
+                        <input id="num-input" class="Input" spellcheck="false" autocomplete="off" placeholder="0x90  |  144  |  0b10010000  |  90h  |  1.5">
+                        <select id="num-base" class="Select">
+                            <option value="auto">AUTO</option>
+                            <option value="2">BASE 2</option>
+                            <option value="8">BASE 8</option>
+                            <option value="10">BASE 10</option>
+                            <option value="16">BASE 16</option>
+                            <option value="32">BASE 32</option>
+                            <option value="36">BASE 36</option>
+                        </select>
+                        <button class="Btn" id="num-save">SAVE</button>
+                        <button class="Btn Ghost" id="num-clear">CLEAR</button>
+                    </div>
+                    <div class="KVGrid" id="num-out"></div>
+                </div>
+
+                <div class="Block">
+                    <h3 class="BlockTitle">TEXT ⇄ BYTES</h3>
+                    <div class="Pane">
+                        <div class="PaneHead"><span>TEXT</span></div>
+                        <textarea id="pane-text" class="PaneArea" spellcheck="false" autocomplete="off" rows="2"></textarea>
+                    </div>
+                    <div class="Pane">
+                        <div class="PaneHead"><span>HEX</span></div>
+                        <textarea id="pane-hex" class="PaneArea" spellcheck="false" autocomplete="off" rows="2"></textarea>
+                    </div>
+                    <div class="Pane">
+                        <div class="PaneHead"><span>\x ESCAPED</span></div>
+                        <textarea id="pane-esc" class="PaneArea" spellcheck="false" autocomplete="off" rows="2"></textarea>
+                    </div>
+                    <div class="Pane">
+                        <div class="PaneHead"><span>DECIMAL BYTES</span></div>
+                        <textarea id="pane-dec" class="PaneArea" spellcheck="false" autocomplete="off" rows="2"></textarea>
+                    </div>
+                    <div class="Pane">
+                        <div class="PaneHead"><span>BINARY</span></div>
+                        <textarea id="pane-bin" class="PaneArea" spellcheck="false" autocomplete="off" rows="2"></textarea>
+                    </div>
+                    <div class="Pane">
+                        <div class="PaneHead"><span>BASE64</span></div>
+                        <textarea id="pane-b64" class="PaneArea" spellcheck="false" autocomplete="off" rows="2"></textarea>
+                    </div>
+                    <div class="Pane">
+                        <div class="PaneHead"><span>URL ENCODED</span></div>
+                        <textarea id="pane-url" class="PaneArea" spellcheck="false" autocomplete="off" rows="2"></textarea>
+                    </div>
+                    <div class="Row">
+                        <button class="Btn" id="conv-save-bytes">SAVE HEX BYTES</button>
+                        <button class="Btn Ghost" id="conv-clear">CLEAR ALL</button>
+                    </div>
+                </div>
+
+                <div class="Block">
+                    <h3 class="BlockTitle">HASH / CHECKSUM <span class="Muted">— of TEXT pane bytes</span></h3>
+                    <div class="KVGrid">
+                        <div class="KV"><span class="K">CRC32</span><span class="V Val" id="hash-crc32">—</span></div>
+                        <div class="KV"><span class="K">SHA-1</span><span class="V Val Wrap" id="hash-sha1">—</span></div>
+                        <div class="KV"><span class="K">SHA-256</span><span class="V Val Wrap" id="hash-sha256">—</span></div>
+                        <div class="KV"><span class="K">SHA-512</span><span class="V Val Wrap" id="hash-sha512">—</span></div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <aside class="Side">
+            <section class="Panel">
+                <div class="PanelHead">SCRATCH TABLE <span class="Badge" id="scratch-count">0</span></div>
+                <form class="FormGrid" id="scratch-form" autocomplete="off">
+                    <input class="Input" id="scratch-label" placeholder="label">
+                    <input class="Input" id="scratch-value" placeholder="value">
+                    <input class="Input Span2" id="scratch-note" placeholder="note">
+                    <button class="Btn Span2" type="submit">ADD ENTRY</button>
+                </form>
+                <div class="TableWrap">
+                    <table class="ScratchTable">
+                        <thead>
+                            <tr><th>LABEL</th><th>VALUE</th><th>NOTE</th><th></th></tr>
+                        </thead>
+                        <tbody id="scratch-tbody"></tbody>
+                    </table>
+                    <div class="Empty" id="scratch-empty">No saved entries yet.</div>
+                </div>
+                <div class="Row Wrap">
+                    <button class="Btn Ghost" id="scratch-copy-all">COPY ALL</button>
+                    <button class="Btn Ghost" id="scratch-export">EXPORT</button>
+                    <button class="Btn Ghost" id="scratch-import">IMPORT</button>
+                    <button class="Btn Ghost Danger" id="scratch-clear">CLEAR</button>
+                    <input type="file" id="scratch-file" accept="application/json,.json" hidden>
+                </div>
+            </section>
+
+            <section class="Panel">
+                <div class="PanelHead">NOTEPAD <span class="Badge" id="notepad-count">0</span></div>
+                <textarea id="notepad" class="Notepad" spellcheck="false" placeholder="session notes…"></textarea>
+                <div class="Row Wrap">
+                    <button class="Btn Ghost" id="notepad-copy">COPY</button>
+                    <button class="Btn Ghost Danger" id="notepad-clear">CLEAR</button>
+                </div>
+            </section>
+
+            <section class="Panel">
+                <div class="PanelHead">TOOLS</div>
+                <ul class="ToolList">
+                    <li><a href="https://www.onlinegdb.com/online_c++_compiler" target="_blank" rel="noopener noreferrer">OnlineGDB — C++ Compiler</a><span class="Muted">quick C++ sandbox</span></li>
+                    <li><a href="https://pthom.github.io/imgui_explorer/?lib=imgui" target="_blank" rel="noopener noreferrer">ImGui Explorer</a><span class="Muted">browse imgui API</span></li>
+                    <li><a href="https://defuse.ca/online-x86-assembler.htm" target="_blank" rel="noopener noreferrer">Online x86 / x64 Assembler</a><span class="Muted">asm → bytes</span></li>
+                    <li><a href="https://www.rapidtables.com/convert/number/hex-to-ascii.html" target="_blank" rel="noopener noreferrer">Hex ⇄ ASCII Converter</a><span class="Muted">rapidtables</span></li>
+                    <li><a href="https://temp-mail.org/en/" target="_blank" rel="noopener noreferrer">Temp Mail</a><span class="Muted">disposable inbox</span></li>
+                </ul>
+            </section>
+        </aside>
+    </main>
+</div>
+
+<div class="Toast hidden" id="toast"></div>
+<audio id="background-music" loop>
+    <source src="Music/track.mp3" type="audio/mpeg">
+</audio>
+<script src="script.js"></script>
+</body>
+</html>

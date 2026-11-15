@@ -1,0 +1,1048 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --bg: #080b0f;
+    --bg-2: #0b1016;
+    --panel: #0f161e;
+    --panel-2: #0c1219;
+    --border: #1b2731;
+    --border-bright: #2a3d4d;
+    --text: #d8e4ee;
+    --muted: #7b8fa0;
+    --accent: #00d4ff;
+    --green: #51cf66;
+    --amber: #ffd43b;
+    --red: #ff6b6b;
+    --purple: #b197fc;
+    --mono: ui-monospace, "Cascadia Code", "JetBrains Mono", "Fira Code", Consolas, monospace;
+    --radius: 10px;
+    --shadow: 0 18px 50px rgba(0, 0, 0, 0.55);
+    --transition: all 0.18s ease;
+}
+
+html {
+    scrollbar-color: #253442 #0b1016;
+}
+
+body {
+    min-height: 100vh;
+    font-family: var(--mono);
+    font-size: 14px;
+    line-height: 1.45;
+    color: var(--text);
+    background:
+        radial-gradient(1100px 560px at 12% -12%, rgba(0, 212, 255, 0.08), transparent 60%),
+        radial-gradient(900px 500px at 108% 4%, rgba(81, 207, 102, 0.05), transparent 60%),
+        var(--bg);
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 999;
+    background: repeating-linear-gradient(180deg, rgba(255, 255, 255, 0.018) 0 1px, transparent 1px 3px);
+    opacity: 0.6;
+}
+
+.App {
+    max-width: 1480px;
+    margin: 0 auto;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.TopBar {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+    padding: 10px 14px;
+    background: linear-gradient(180deg, var(--panel), var(--panel-2));
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    position: sticky;
+    top: 8px;
+    z-index: 60;
+    backdrop-filter: blur(8px);
+}
+
+.Brand {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    min-width: 0;
+}
+
+.BrandPrompt {
+    color: var(--green);
+    font-size: 12px;
+    opacity: 0.85;
+}
+
+.BrandName {
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    color: var(--accent);
+    text-shadow: 0 0 18px rgba(0, 212, 255, 0.45);
+}
+
+.BrandTag {
+    font-size: 10px;
+    letter-spacing: 1.4px;
+    color: var(--muted);
+    border: 1px solid var(--border-bright);
+    border-radius: 4px;
+    padding: 1px 5px;
+}
+
+.Tabs {
+    display: flex;
+    gap: 6px;
+    background: var(--bg-2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 4px;
+}
+
+.TabBtn {
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 1px;
+    padding: 7px 14px;
+    border: none;
+    border-radius: 6px;
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.TabBtn:hover {
+    color: var(--text);
+    background: rgba(0, 212, 255, 0.07);
+}
+
+.TabBtn.active {
+    background: var(--accent);
+    color: #04141a;
+    font-weight: 700;
+}
+
+.TopActions {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.Dropdown {
+    position: relative;
+}
+
+.DropdownMenu {
+    position: absolute;
+    right: 0;
+    top: calc(100% + 8px);
+    min-width: 280px;
+    background: var(--panel-2);
+    border: 1px solid var(--border-bright);
+    border-radius: 8px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    z-index: 80;
+}
+
+.DropdownItem {
+    display: block;
+    padding: 10px 14px;
+    color: var(--text);
+    text-decoration: none;
+    font-size: 12px;
+    border-bottom: 1px solid var(--border);
+    transition: var(--transition);
+}
+
+.DropdownItem:last-child {
+    border-bottom: none;
+}
+
+.DropdownItem:hover {
+    background: rgba(0, 212, 255, 0.09);
+    color: var(--accent);
+}
+
+.Btn {
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.6px;
+    padding: 8px 14px;
+    border-radius: 6px;
+    border: 1px solid var(--accent);
+    background: var(--accent);
+    color: #04141a;
+    font-weight: 700;
+    cursor: pointer;
+    transition: var(--transition);
+    white-space: nowrap;
+}
+
+.Btn:hover {
+    background: #33dfff;
+    box-shadow: 0 0 16px rgba(0, 212, 255, 0.4);
+}
+
+.Btn:active {
+    transform: translateY(1px);
+}
+
+.Btn.Ghost {
+    background: transparent;
+    border-color: var(--border-bright);
+    color: var(--text);
+    font-weight: 600;
+}
+
+.Btn.Ghost:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    box-shadow: none;
+}
+
+.Btn.Danger {
+    color: var(--red);
+}
+
+.Btn.Danger:hover {
+    border-color: var(--red);
+    color: var(--red);
+    background: rgba(255, 107, 107, 0.08);
+}
+
+.MusicBtn {
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    color: var(--accent);
+}
+
+.MusicBtn.playing {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #04141a;
+}
+
+.Layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 400px;
+    gap: 14px;
+    align-items: start;
+}
+
+.Main,
+.Side {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    min-width: 0;
+}
+
+.Panel {
+    background: linear-gradient(180deg, var(--panel), var(--panel-2));
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    min-width: 0;
+}
+
+.PanelHead {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    letter-spacing: 1.6px;
+    color: var(--muted);
+    text-transform: uppercase;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+}
+
+.Badge {
+    background: rgba(0, 212, 255, 0.12);
+    color: var(--accent);
+    border: 1px solid rgba(0, 212, 255, 0.3);
+    border-radius: 20px;
+    padding: 0 7px;
+    font-size: 10px;
+    letter-spacing: 0;
+}
+
+.CalcHead {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.Spacer {
+    flex: 1;
+}
+
+.Segmented {
+    display: flex;
+    background: var(--bg-2);
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    padding: 3px;
+    gap: 3px;
+}
+
+.SegBtn {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 1px;
+    padding: 5px 12px;
+    border: none;
+    border-radius: 5px;
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.SegBtn:hover {
+    color: var(--text);
+}
+
+.SegBtn.active {
+    background: var(--green);
+    color: #04140a;
+    font-weight: 700;
+}
+
+.Field {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 10px;
+    letter-spacing: 1.2px;
+    color: var(--muted);
+}
+
+.Select,
+.Input {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--text);
+    background: var(--bg-2);
+    border: 1px solid var(--border-bright);
+    border-radius: 6px;
+    padding: 7px 9px;
+    outline: none;
+    transition: var(--transition);
+    min-width: 0;
+}
+
+.Select:focus,
+.Input:focus,
+.PaneArea:focus,
+.Notepad:focus,
+.ExprInput:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px rgba(0, 212, 255, 0.14);
+}
+
+.Display {
+    background: var(--bg-2);
+    border: 1px solid var(--border-bright);
+    border-radius: 8px;
+    padding: 12px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+}
+
+.ExprInput {
+    width: 100%;
+    font-family: var(--mono);
+    font-size: 16px;
+    color: var(--text);
+    background: transparent;
+    border: none;
+    border-bottom: 1px dashed var(--border-bright);
+    padding: 4px 0 8px;
+    outline: none;
+    letter-spacing: 0.5px;
+}
+
+.ExprInput::placeholder {
+    color: #46586a;
+    font-size: 13px;
+}
+
+.ResultBig {
+    font-size: 30px;
+    font-weight: 700;
+    color: var(--accent);
+    text-align: right;
+    word-break: break-all;
+    text-shadow: 0 0 22px rgba(0, 212, 255, 0.22);
+    cursor: pointer;
+    line-height: 1.15;
+    min-height: 36px;
+}
+
+.ResultStatus {
+    text-align: right;
+    font-size: 11px;
+    color: var(--muted);
+    min-height: 15px;
+}
+
+.ResultStatus.error {
+    color: var(--red);
+}
+
+.ResultGrid {
+    display: grid;
+    gap: 2px;
+    background: var(--bg-2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 12px;
+    min-width: 0;
+}
+
+.KVGrid {
+    display: grid;
+    gap: 2px;
+    background: var(--bg-2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 12px;
+    min-width: 0;
+}
+
+.KV {
+    display: grid;
+    grid-template-columns: 88px minmax(0, 1fr);
+    gap: 10px;
+    align-items: baseline;
+    padding: 3px 0;
+    border-bottom: 1px solid rgba(27, 39, 49, 0.6);
+}
+
+.KV:last-child {
+    border-bottom: none;
+}
+
+.K {
+    font-size: 10px;
+    letter-spacing: 1.2px;
+    color: var(--muted);
+    text-transform: uppercase;
+}
+
+.V {
+    font-size: 13px;
+    word-break: break-all;
+    min-width: 0;
+}
+
+.V.Wrap {
+    font-size: 11px;
+    line-height: 1.5;
+}
+
+.Val {
+    cursor: pointer;
+    transition: color 0.12s ease;
+}
+
+.Val:hover {
+    color: var(--accent);
+    text-decoration: underline dotted;
+}
+
+.Bits {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--bg-2);
+    padding: 8px 10px;
+}
+
+.Bits summary {
+    cursor: pointer;
+    font-size: 10px;
+    letter-spacing: 1.4px;
+    color: var(--muted);
+    user-select: none;
+}
+
+.Bits[open] summary {
+    margin-bottom: 8px;
+}
+
+.BitGrid {
+    display: grid;
+    grid-template-columns: repeat(8, minmax(0, 1fr));
+    gap: 4px;
+}
+
+.Bit {
+    font-family: var(--mono);
+    font-size: 11px;
+    padding: 4px 0;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+    background: var(--panel-2);
+    color: var(--muted);
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.Bit:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
+.Bit.On {
+    background: rgba(0, 212, 255, 0.16);
+    border-color: rgba(0, 212, 255, 0.5);
+    color: var(--accent);
+    font-weight: 700;
+}
+
+.PadWrap {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.Pad {
+    display: grid;
+    gap: 7px;
+}
+
+.PadSix {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+}
+
+.PadFive {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.Key {
+    font-family: var(--mono);
+    font-size: 14px;
+    font-weight: 600;
+    padding: 13px 4px;
+    border-radius: 7px;
+    border: 1px solid var(--border-bright);
+    background: var(--panel-2);
+    color: var(--text);
+    cursor: pointer;
+    transition: var(--transition);
+    user-select: none;
+    touch-action: manipulation;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.Key:hover {
+    border-color: var(--accent);
+    box-shadow: 0 0 14px rgba(0, 212, 255, 0.16);
+}
+
+.Key:active {
+    transform: scale(0.96);
+}
+
+.KeyFn {
+    font-size: 11px;
+    color: var(--amber);
+}
+
+.KeyOp {
+    color: var(--accent);
+    font-size: 15px;
+}
+
+.PadSix .KeyEq {
+    grid-column: span 2;
+}
+
+.KeyEq {
+    background: var(--green);
+    border-color: var(--green);
+    color: #04140a;
+    font-size: 17px;
+}
+
+.KeyEq:hover {
+    background: #6ce07f;
+    box-shadow: 0 0 18px rgba(81, 207, 102, 0.4);
+}
+
+.Hint {
+    font-size: 10px;
+    color: #5b7183;
+    letter-spacing: 0.4px;
+    border-top: 1px dashed var(--border);
+    padding-top: 8px;
+    word-break: break-word;
+}
+
+.Block {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px;
+    background: rgba(8, 11, 15, 0.35);
+}
+
+.BlockTitle {
+    font-size: 11px;
+    letter-spacing: 1.6px;
+    color: var(--accent);
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+.Muted {
+    color: var(--muted);
+    font-size: 10px;
+    letter-spacing: 0.6px;
+    text-transform: none;
+}
+
+.Row {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    min-width: 0;
+}
+
+.Row.Wrap {
+    flex-wrap: wrap;
+}
+
+.Row .Input {
+    flex: 1;
+}
+
+.Pane {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.PaneHead {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 10px;
+    letter-spacing: 1.3px;
+    color: var(--muted);
+}
+
+.PaneArea,
+.Notepad {
+    width: 100%;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--text);
+    background: var(--bg-2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 8px 10px;
+    outline: none;
+    resize: vertical;
+    min-height: 52px;
+    transition: var(--transition);
+    word-break: break-all;
+}
+
+.PaneArea.invalid {
+    border-color: var(--red);
+    box-shadow: 0 0 0 2px rgba(255, 107, 107, 0.14);
+}
+
+.Notepad {
+    min-height: 220px;
+    resize: vertical;
+    line-height: 1.55;
+}
+
+.FormGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+}
+
+.Span2 {
+    grid-column: span 2;
+}
+
+.TableWrap {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: auto;
+    max-height: 340px;
+    background: var(--bg-2);
+}
+
+.ScratchTable {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 11px;
+    table-layout: fixed;
+}
+
+.ScratchTable th {
+    position: sticky;
+    top: 0;
+    background: var(--panel-2);
+    color: var(--muted);
+    font-size: 9px;
+    letter-spacing: 1.2px;
+    text-align: left;
+    padding: 7px 8px;
+    border-bottom: 1px solid var(--border);
+    z-index: 2;
+}
+
+.ScratchTable th:nth-child(1) {
+    width: 28%;
+}
+
+.ScratchTable th:nth-child(2) {
+    width: 32%;
+}
+
+.ScratchTable th:nth-child(3) {
+    width: 26%;
+}
+
+.ScratchTable th:nth-child(4) {
+    width: 14%;
+}
+
+.ScratchTable td {
+    padding: 6px 8px;
+    border-bottom: 1px solid rgba(27, 39, 49, 0.7);
+    vertical-align: top;
+    word-break: break-all;
+}
+
+.ScratchTable tbody tr:hover {
+    background: rgba(0, 212, 255, 0.05);
+}
+
+.CellValue {
+    color: var(--accent);
+    cursor: pointer;
+}
+
+.CellValue:hover {
+    text-decoration: underline dotted;
+}
+
+.CellNote {
+    color: var(--muted);
+    font-size: 10px;
+}
+
+.CellActions {
+    display: flex;
+    gap: 4px;
+}
+
+.Mini {
+    font-family: var(--mono);
+    font-size: 10px;
+    padding: 2px 6px;
+    border-radius: 4px;
+    border: 1px solid var(--border-bright);
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.Mini:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
+.Mini.Danger:hover {
+    border-color: var(--red);
+    color: var(--red);
+}
+
+.Empty {
+    padding: 18px 10px;
+    text-align: center;
+    color: var(--muted);
+    font-size: 11px;
+}
+
+.ToolList {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.ToolList li {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    padding: 7px 8px;
+    border-radius: 6px;
+    border-bottom: 1px solid rgba(27, 39, 49, 0.6);
+    transition: var(--transition);
+}
+
+.ToolList li:last-child {
+    border-bottom: none;
+}
+
+.ToolList li:hover {
+    background: rgba(0, 212, 255, 0.05);
+}
+
+.ToolList a {
+    color: var(--text);
+    text-decoration: none;
+    font-size: 12px;
+}
+
+.ToolList a:hover {
+    color: var(--accent);
+    text-decoration: underline dotted;
+}
+
+.Toast {
+    position: fixed;
+    left: 50%;
+    bottom: 24px;
+    transform: translateX(-50%) translateY(12px);
+    background: var(--panel-2);
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    font-size: 12px;
+    padding: 9px 18px;
+    border-radius: 8px;
+    box-shadow: var(--shadow);
+    z-index: 200;
+    opacity: 0;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    pointer-events: none;
+}
+
+.Toast.Show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.TabPanel {
+    animation: fadeIn 0.2s ease;
+}
+
+@keyframes calculatorSplit {
+    0%, 100% { transform: translateX(0); clip-path: inset(0 0 0 0); }
+    10% { clip-path: inset(0 50% 0 0); transform: translateX(-24px); }
+    10.5% { clip-path: inset(0 0 0 50%); transform: translateX(24px); }
+    20% { clip-path: inset(0 50% 0 0); transform: translateX(-24px); }
+    20.5% { clip-path: inset(0 0 0 50%); transform: translateX(24px); }
+    30% { clip-path: inset(0 50% 0 0); transform: translateX(-24px); }
+    30.5% { clip-path: inset(0 0 0 50%); transform: translateX(24px); }
+    40% { clip-path: inset(0 50% 0 0); transform: translateX(-24px); }
+    40.5% { clip-path: inset(0 0 0 50%); transform: translateX(24px); }
+    50% { clip-path: inset(0 50% 0 0); transform: translateX(-24px); }
+    50.5% { clip-path: inset(0 0 0 50%); transform: translateX(24px); }
+    60% { clip-path: inset(0 50% 0 0); transform: translateX(-24px); }
+    60.5% { clip-path: inset(0 0 0 50%); transform: translateX(24px); }
+    70% { clip-path: inset(0 50% 0 0); transform: translateX(-24px); }
+    70.5% { clip-path: inset(0 0 0 50%); transform: translateX(24px); }
+    80% { clip-path: inset(0 50% 0 0); transform: translateX(-24px); }
+    80.5% { clip-path: inset(0 0 0 50%); transform: translateX(24px); }
+    90% { clip-path: inset(0 50% 0 0); transform: translateX(-24px); }
+    90.5% { clip-path: inset(0 0 0 50%); transform: translateX(24px); }
+}
+
+.calculator.split-shake,
+.Panel.split-shake {
+    animation: calculatorSplit 1.2s ease-in-out;
+}
+
+@keyframes confettiFallRandom {
+    0% {
+        transform: translateY(-100vh) translateX(0) rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(100vh) translateX(var(--random-drift)) rotate(var(--random-rotation));
+        opacity: 0;
+    }
+}
+
+.confetti {
+    position: fixed;
+    width: 10px;
+    height: 10px;
+    pointer-events: none;
+    z-index: 9999;
+}
+
+@media (max-width: 1120px) {
+    .Layout {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .Side {
+        order: 2;
+    }
+}
+
+@media (max-width: 620px) {
+    .App {
+        padding: 10px;
+        gap: 10px;
+    }
+
+    .TopBar {
+        position: static;
+        gap: 8px;
+        padding: 8px 10px;
+    }
+
+    .Tabs {
+        order: 3;
+        width: 100%;
+    }
+
+    .TabBtn {
+        flex: 1;
+    }
+
+    .TopActions {
+        margin-left: auto;
+    }
+
+    .BrandTag {
+        display: none;
+    }
+
+    .ResultBig {
+        font-size: 22px;
+    }
+
+    .KV {
+        grid-template-columns: 72px minmax(0, 1fr);
+        gap: 8px;
+    }
+
+    .K {
+        font-size: 9px;
+    }
+
+    .Key {
+        padding: 11px 2px;
+        font-size: 13px;
+    }
+
+    .KeyFn {
+        font-size: 9px;
+    }
+
+    .PadSix,
+    .PadFive {
+        gap: 5px;
+    }
+
+    .PadWrap {
+        gap: 5px;
+    }
+
+    .FormGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .Span2 {
+        grid-column: span 1;
+    }
+
+    .Row {
+        flex-wrap: wrap;
+    }
+
+    .Row .Input {
+        flex: 1 1 100%;
+    }
+
+    .Row .Select {
+        flex: 1;
+    }
+
+    .BitGrid {
+        gap: 3px;
+    }
+
+    .Bit {
+        font-size: 9px;
+    }
+
+    .Notepad {
+        min-height: 160px;
+    }
+}
+
+@media (max-width: 400px) {
+    .Key {
+        padding: 9px 1px;
+        font-size: 12px;
+    }
+
+    .KeyOp {
+        font-size: 13px;
+    }
+
+    .ResultBig {
+        font-size: 18px;
+    }
+
+    .ScratchTable th:nth-child(3),
+    .ScratchTable td:nth-child(3) {
+        display: none;
+    }
+}
