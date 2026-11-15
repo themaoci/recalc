@@ -208,11 +208,12 @@
                         <button class="Btn" id="num-save">SAVE</button>
                         <button class="Btn Ghost" id="num-clear">CLEAR</button>
                     </div>
-                    <div class="KVGrid" id="num-out"></div>
+                    <div class="KVGrid TwoCol" id="num-out"></div>
                 </div>
 
                 <div class="Block">
                     <h3 class="BlockTitle">TEXT ⇄ BYTES</h3>
+                    <div class="PaneGrid">
                     <div class="Pane">
                         <div class="PaneHead"><span>TEXT</span></div>
                         <textarea id="pane-text" class="PaneArea" spellcheck="false" autocomplete="off" rows="2"></textarea>
@@ -241,6 +242,7 @@
                         <div class="PaneHead"><span>URL ENCODED</span></div>
                         <textarea id="pane-url" class="PaneArea" spellcheck="false" autocomplete="off" rows="2"></textarea>
                     </div>
+                    </div>
                     <div class="Row">
                         <button class="Btn" id="conv-save-bytes">SAVE HEX BYTES</button>
                         <button class="Btn Ghost" id="conv-clear">CLEAR ALL</button>
@@ -249,7 +251,7 @@
 
                 <div class="Block">
                     <h3 class="BlockTitle">HASH / CHECKSUM <span class="Muted">— of TEXT pane bytes</span></h3>
-                    <div class="KVGrid">
+                    <div class="KVGrid TwoCol">
                         <div class="KV"><span class="K">CRC32</span><span class="V Val" id="hash-crc32">—</span></div>
                         <div class="KV"><span class="K">SHA-1</span><span class="V Val Wrap" id="hash-sha1">—</span></div>
                         <div class="KV"><span class="K">SHA-256</span><span class="V Val Wrap" id="hash-sha256">—</span></div>
@@ -296,16 +298,6 @@
                 </div>
             </section>
 
-            <section class="Panel">
-                <div class="PanelHead">TOOLS</div>
-                <ul class="ToolList">
-                    <li><a href="https://www.onlinegdb.com/online_c++_compiler" target="_blank" rel="noopener noreferrer">OnlineGDB — C++ Compiler</a><span class="Muted">quick C++ sandbox</span></li>
-                    <li><a href="https://pthom.github.io/imgui_explorer/?lib=imgui" target="_blank" rel="noopener noreferrer">ImGui Explorer</a><span class="Muted">browse imgui API</span></li>
-                    <li><a href="https://defuse.ca/online-x86-assembler.htm" target="_blank" rel="noopener noreferrer">Online x86 / x64 Assembler</a><span class="Muted">asm → bytes</span></li>
-                    <li><a href="https://www.rapidtables.com/convert/number/hex-to-ascii.html" target="_blank" rel="noopener noreferrer">Hex ⇄ ASCII Converter</a><span class="Muted">rapidtables</span></li>
-                    <li><a href="https://temp-mail.org/en/" target="_blank" rel="noopener noreferrer">Temp Mail</a><span class="Muted">disposable inbox</span></li>
-                </ul>
-            </section>
         </aside>
     </main>
 </div>
